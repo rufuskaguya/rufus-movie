@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RUFUS MOVIE</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #090909;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background: #151515;
+      padding: 20px;
+      border-bottom: 2px solid #e50914;
+      text-align: center;
+    }
+    h1 {
+      color: #e50914;
+      font-size: 32px;
+      margin: 5px;
+    }
+    nav { margin-top: 15px; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 10px;
+    }
+    .hero {
+      text-align: center;
+      padding: 65px 20px;
+      background: linear-gradient(135deg, #260000, #090909);
+    }
+    .hero h2 { font-size: 30px; }
+    .hero p { color: #ccc; line-height: 1.6; }
+    .btn {
+      display: inline-block;
+      background: #e50914;
+      color: white;
+      padding: 13px 25px;
+      border-radius: 6px;
+      text-decoration: none;
+      margin-top: 15px;
+    }
+    section {
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    .card {
+      background: #1b1b1b;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 22px;
+      width: 145px;
+    }
+    .card span {
+      font-size: 35px;
+    }
+    footer {
+      background: #151515;
+      color: #aaa;
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>RUFUS MOVIE</h1>
+  <p>Ton univers de divertissement</p>
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#catalogue">Catalogue</a>
+    <a href="#apropos">À propos</a>
+  </nav>
+</header>
+
+<div class="hero" id="accueil">
+  <h2>Bienvenue sur RUFUS MOVIE</h2>
+  <p>Découvre ton prochain film, ta prochaine série
+  ou ton prochain anime préféré.</p>
+  <a href="#catalogue" class="btn">Découvrir</a>
+</div>
+
+<section id="catalogue">
+  <h2>Nos catégories</h2>
+  <div class="cards">
+    <div class="card">
+      <span>🎬</span>
+      <h3>Films</h3>
+      <p>Découvre des films.</p>
+    </div>
+    <div class="card">
+      <span>📺</span>
+      <h3>Séries</h3>
+      <p>Explore les séries.</p>
+    </div>
+    <div class="card">
+      <span>⚔️</span>
+      <h3>Animes</h3>
+      <p>Retrouve tes animes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="apropos">
+  <h2>À propos de RUFUS MOVIE</h2>
+  <p>RUFUS MOVIE est un projet d'application
+  Android consacré à la découverte de films,
+  séries et animes.</p>
+</section>
+
+<footer>
+  <p>© 2026 RUFUS MOVIE</p>
+  <p>Projet indépendant.</p>
+  <p>Les informations sur les films pourront être
+  fournies par TMDB après autorisation.</p>
+</footer>
+
+</body>
+</html>
