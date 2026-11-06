@@ -2,132 +2,162 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RUFUS MOVIE</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #090909;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      background: #151515;
-      padding: 20px;
-      border-bottom: 2px solid #e50914;
-      text-align: center;
-    }
-    h1 {
-      color: #e50914;
-      font-size: 32px;
-      margin: 5px;
-    }
-    nav { margin-top: 15px; }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 10px;
-    }
-    .hero {
-      text-align: center;
-      padding: 65px 20px;
-      background: linear-gradient(135deg, #260000, #090909);
-    }
-    .hero h2 { font-size: 30px; }
-    .hero p { color: #ccc; line-height: 1.6; }
-    .btn {
-      display: inline-block;
-      background: #e50914;
-      color: white;
-      padding: 13px 25px;
-      border-radius: 6px;
-      text-decoration: none;
-      margin-top: 15px;
-    }
-    section {
-      padding: 30px 20px;
-      text-align: center;
-    }
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-    }
-    .card {
-      background: #1b1b1b;
-      border: 1px solid #333;
-      border-radius: 10px;
-      padding: 22px;
-      width: 145px;
-    }
-    .card span {
-      font-size: 35px;
-    }
-    footer {
-      background: #151515;
-      color: #aaa;
-      text-align: center;
-      padding: 25px;
-      font-size: 13px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RUFUS MOVIE</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #090909;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+header {
+  background: #151515;
+  padding: 22px 15px;
+  text-align: center;
+  border-bottom: 2px solid #e50914;
+}
+h1 { color: #e50914; margin: 5px; }
+header p { color: #bbb; }
+.search {
+  width: 90%;
+  padding: 13px;
+  margin: 18px 5%;
+  border: 1px solid #e50914;
+  border-radius: 8px;
+  background: #202020;
+  color: white;
+  font-size: 16px;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+}
+nav button {
+  background: #222;
+  color: white;
+  border: 1px solid #e50914;
+  padding: 10px 14px;
+  border-radius: 20px;
+}
+nav button.active { background: #e50914; }
+h2 {
+  margin: 20px 15px;
+  color: #e50914;
+}
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 12px;
+}
+.card {
+  background: #1b1b1b;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+.poster {
+  height: 145px;
+  background: linear-gradient(135deg, #350000, #111);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e50914;
+  font-size: 22px;
+  font-weight: bold;
+}
+.card h3 { margin: 10px; }
+.card p { color: #aaa; margin: 10px; font-size: 13px; }
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #888;
+  border-top: 1px solid #333;
+  margin-top: 25px;
+}
+</style>
 </head>
 <body>
 
 <header>
   <h1>RUFUS MOVIE</h1>
-  <p>Ton univers de divertissement</p>
-  <nav>
-    <a href="#accueil">Accueil</a>
-    <a href="#catalogue">Catalogue</a>
-    <a href="#apropos">À propos</a>
-  </nav>
+  <p>Ton univers de films, séries et animés</p>
 </header>
 
-<div class="hero" id="accueil">
-  <h2>Bienvenue sur RUFUS MOVIE</h2>
-  <p>Découvre ton prochain film, ta prochaine série
-  ou ton prochain anime préféré.</p>
-  <a href="#catalogue" class="btn">Découvrir</a>
-</div>
+<input class="search" id="search"
+  type="search" placeholder="Rechercher un titre...">
 
-<section id="catalogue">
-  <h2>Nos catégories</h2>
-  <div class="cards">
-    <div class="card">
-      <span>🎬</span>
-      <h3>Films</h3>
-      <p>Découvre des films.</p>
-    </div>
-    <div class="card">
-      <span>📺</span>
-      <h3>Séries</h3>
-      <p>Explore les séries.</p>
-    </div>
-    <div class="card">
-      <span>⚔️</span>
-      <h3>Animes</h3>
-      <p>Retrouve tes animes.</p>
-    </div>
-  </div>
-</section>
+<nav>
+  <button class="active" onclick="filterItems('Tous', this)">TOUS</button>
+  <button onclick="filterItems('Film', this)">FILMS</button>
+  <button onclick="filterItems('Série', this)">SÉRIES</button>
+  <button onclick="filterItems('Animé', this)">ANIMÉS</button>
+</nav>
 
-<section id="apropos">
-  <h2>À propos de RUFUS MOVIE</h2>
-  <p>RUFUS MOVIE est un projet d'application
-  Android consacré à la découverte de films,
-  séries et animes.</p>
+<h2>Découvrir</h2>
+<section class="catalogue" id="catalogue">
+
+  <article class="card" data-type="Film">
+    <div class="poster">FILM</div>
+    <h3>Film exemple 1</h3>
+    <p>Catégorie : Film</p>
+  </article>
+
+  <article class="card" data-type="Série">
+    <div class="poster">SÉRIE</div>
+    <h3>Série exemple 1</h3>
+    <p>Catégorie : Série</p>
+  </article>
+
+  <article class="card" data-type="Animé">
+    <div class="poster">ANIMÉ</div>
+    <h3>Animé exemple 1</h3>
+    <p>Catégorie : Animé</p>
+  </article>
+
+  <article class="card" data-type="Film">
+    <div class="poster">FILM</div>
+    <h3>Film exemple 2</h3>
+    <p>Catégorie : Film</p>
+  </article>
+
 </section>
 
 <footer>
   <p>© 2026 RUFUS MOVIE</p>
-  <p>Projet indépendant.</p>
-  <p>Les informations sur les films pourront être
-  fournies par TMDB après autorisation.</p>
+  <p>Catalogue de démonstration</p>
 </footer>
+
+<script>
+function filterItems(type, button) {
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display =
+      type === 'Tous' || card.dataset.type === type
+      ? 'block' : 'none';
+  });
+
+  document.querySelectorAll('nav button').forEach(b => {
+    b.classList.remove('active');
+  });
+  button.classList.add('active');
+}
+
+document.getElementById('search').addEventListener('input', function() {
+  const query = this.value.toLowerCase();
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display =
+      card.textContent.toLowerCase().includes(query)
+      ? 'block' : 'none';
+  });
+});
+</script>
 
 </body>
 </html>
