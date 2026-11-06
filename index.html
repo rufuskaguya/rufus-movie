@@ -4,6 +4,314 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>RUFUS MOVIE</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090909;color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ background:#111;padding:18px;
+ display:flex;justify-content:space-between;
+ align-items:center;position:sticky;top:0;z-index:5;
+ border-bottom:2px solid #e50914;
+}
+.logo{font-size:23px;font-weight:bold;color:#ed1520}
+.logo span{color:white}
+header small{color:#aaa}
+.hero{
+ padding:35px 18px;
+ background:linear-gradient(120deg,#360000,#111 70%);
+}
+.hero h1{font-size:29px;margin:0 0 10px}
+.hero p{color:#ccc}
+.search{padding:15px}
+.search input{
+ width:100%;padding:15px;border-radius:10px;
+ border:1px solid #444;background:#181818;
+ color:white;font-size:16px;outline:none;
+}
+.search input:focus{border-color:#e50914}
+nav{
+ display:flex;gap:10px;padding:0 15px 15px;
+ overflow-x:auto;
+}
+nav button{
+ background:#222;color:white;border:0;
+ padding:10px 16px;border-radius:20px;
+ white-space:nowrap;
+}
+nav button.active{background:#e50914}
+h2{padding:0 15px;font-size:19px}
+#catalogue{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:13px;padding:0 13px 25px;
+}
+.movie{
+ background:#171717;border-radius:10px;
+ overflow:hidden;border:1px solid #292929;
+}
+.poster{
+ height:170px;display:flex;align-items:center;
+ justify-content:center;text-align:center;
+ padding:12px;font-size:23px;font-weight:bold;
+ background:linear-gradient(145deg,#500000,#161616);
+}
+.poster span{color:#ff2835}
+.info{padding:10px}
+.info h3{font-size:15px;margin:0 0 6px}
+.info p{font-size:12px;color:#aaa;margin:0 0 10px}
+.actions{display:flex;gap:6px}
+.actions button{
+ flex:1;padding:9px 3px;border:0;
+ border-radius:6px;color:white;
+ font-size:11px;font-weight:bold;
+}
+.watch{background:#e50914}
+.download{background:#333}
+#empty{
+ text-align:center;color:#aaa;padding:35px;
+ display:none;grid-column:1/-1;
+}
+#player{
+ display:none;position:fixed;inset:0;
+ background:#000e;z-index:10;
+ padding:20px;align-items:center;
+ justify-content:center;
+}
+.playerbox{width:100%;max-width:600px}
+.playerbox video{width:100%;background:#000}
+.close{
+ background:#e50914;color:white;border:0;
+ padding:10px 18px;border-radius:7px;
+ margin-bottom:15px;
+}
+#downloadStatus{
+ color:#ff5555;font-size:13px;margin-top:10px;
+}
+footer{
+ text-align:center;padding:25px;color:#777;
+ border-top:1px solid #222;font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">RUFUS <span>MOVIE</span></div>
+ <small>V2.0</small>
+</header>
+
+<section class="hero">
+ <h1>Bienvenue sur RUFUS MOVIE</h1>
+ <p>Vos films, séries et animés au même endroit.</p>
+</section>
+
+<div class="search">
+ <input id="search" type="search"
+ placeholder="Rechercher un film, animé, série...">
+</div>
+
+<nav>
+ <button class="active" data-cat="Tous">Tout</button>
+ <button data-cat="Film">Films</button>
+ <button data-cat="Série">Séries</button>
+ <button data-cat="Animé">Animés</button>
+</nav>
+
+<h2 id="sectionTitle">Découvrir</h2>
+
+<div id="catalogue">
+ <div id="empty">Aucun résultat trouvé.</div>
+</div>
+
+<div id="player">
+ <div class="playerbox">
+  <button class="close" onclick="closePlayer()">✕ Fermer</button>
+  <h3 id="playerTitle">Lecture</h3>
+  <video id="video" controls playsinline></video>
+  <p id="downloadStatus"></p>
+ </div>
+</div>
+
+<footer>
+ RUFUS MOVIE © 2026<br>
+ Votre espace de divertissement
+</footer>
+
+<script>
+
+// CATALOGUE DE DÉMONSTRATION
+// Remplace les adresses vidéo par des sources autorisées.
+
+const demoVideo =
+"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
+
+const movies = [
+ {title:"Vidéo de démonstration 1",category:"Film",
+  year:"2026",source:demoVideo},
+ {title:"Vidéo de démonstration 2",category:"Animé",
+  year:"2026",source:demoVideo},
+ {title:"Vidéo de démonstration 3",category:"Série",
+  year:"2026",source:demoVideo},
+ {title:"Vidéo de démonstration 4",category:"Film",
+  year:"2026",source:demoVideo}
+];
+
+let currentCategory="Tous";
+
+const catalogue=document.getElementById("catalogue");
+const search=document.getElementById("search");
+const empty=document.getElementById("empty");
+
+function renderMovies(){
+ const query=search.value.toLowerCase().trim();
+
+ const filtered=movies.filter(movie=>{
+  const matchesText=movie.title.toLowerCase().includes(query);
+  const matchesCategory=
+   currentCategory==="Tous" ||
+   movie.category===currentCategory;
+  return matchesText && matchesCategory;
+ });
+
+ catalogue.innerHTML="";
+ catalogue.appendChild(empty);
+
+ filtered.forEach(movie=>{
+  const card=document.createElement("div");
+  card.className="movie";
+
+  const poster=document.createElement("div");
+  poster.className="poster";
+  poster.innerHTML='<span>RUFUS<br>MOVIE</span>';
+
+  const info=document.createElement("div");
+  info.className="info";
+
+  const title=document.createElement("h3");
+  title.textContent=movie.title;
+
+  const details=document.createElement("p");
+  details.textContent=movie.category+" • "+movie.year;
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+
+  const watch=document.createElement("button");
+  watch.className="watch";
+  watch.textContent="▶ Regarder";
+  watch.onclick=()=>playMovie(movie);
+
+  const download=document.createElement("button");
+  download.className="download";
+  download.textContent="↓ Télécharger";
+  download.onclick=()=>downloadMovie(movie);
+
+  actions.append(watch,download);
+  info.append(title,details,actions);
+  card.append(poster,info);
+  catalogue.appendChild(card);
+ });
+
+ empty.style.display=filtered.length ? "none":"block";
+}
+
+search.addEventListener("input",renderMovies);
+
+document.querySelectorAll("nav button").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll("nav button")
+   .forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  currentCategory=button.dataset.cat;
+  renderMovies();
+ });
+});
+
+function playMovie(movie){
+ const player=document.getElementById("player");
+ const video=document.getElementById("video");
+
+ document.getElementById("playerTitle").textContent=movie.title;
+ document.getElementById("downloadStatus").textContent="";
+ video.src=movie.source;
+ player.style.display="flex";
+ video.play().catch(()=>{});
+}
+
+function closePlayer(){
+ const video=document.getElementById("video");
+ video.pause();
+ video.removeAttribute("src");
+ video.load();
+ document.getElementById("player").style.display="none";
+}
+
+// Téléchargement avec progression.
+// La source doit autoriser les téléchargements et CORS.
+
+async function downloadMovie(movie){
+ const status=document.getElementById("downloadStatus");
+ status.textContent="Préparation du téléchargement...";
+
+ try{
+  const response=await fetch(movie.source);
+
+  if(!response.ok) throw new Error("Téléchargement impossible");
+
+  const total=Number(response.headers.get("content-length"))||0;
+  const reader=response.body.getReader();
+  const chunks=[];
+  let received=0;
+
+  while(true){
+   const {done,value}=await reader.read();
+   if(done) break;
+
+   chunks.push(value);
+   received+=value.length;
+
+   if(total){
+    status.textContent=
+     "Téléchargement : "+Math.round(received/total*100)+" %";
+   }else{
+    status.textContent="Téléchargement en cours...";
+   }
+  }
+
+  const blob=new Blob(chunks,{type:"video/mp4"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download=movie.title.replace(/[^a-z0-9]/gi,"_")+".mp4";
+  link.click();
+
+  URL.revokeObjectURL(url);
+  status.textContent="Téléchargement terminé !";
+
+ }catch(error){
+  status.textContent=
+   "Téléchargement non disponible pour cette source. Vérifie les autorisations.";
+ }
+}
+
+renderMovies();
+
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RUFUS MOVIE</title>
 <style>
 * { box-sizing: border-box; }
